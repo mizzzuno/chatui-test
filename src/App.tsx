@@ -1,21 +1,19 @@
-import './App.css'
-import ShinyText from '@/components/reactbits/ShinyText'
+import { ChatProvider } from "@/context/ChatContext";
+import { AppLayout } from "@/components/layout/AppLayout";
+import { mockRooms, mockMessages } from "@/data/mockData";
 
 function App() {
   return (
-    <div className="flex h-screen items-center justify-center bg-background">
-      <div className="text-center space-y-4">
-        <h1 className="text-4xl font-bold text-foreground">
-          Chat UI
-        </h1>
-        <ShinyText
-          text="Tailwind + shadcn/ui + React Bits ready!"
-          speed={3}
-          className="text-lg"
-        />
-      </div>
-    </div>
-  )
+    <ChatProvider
+      initialData={{
+        rooms: mockRooms,
+        activeRoomId: mockRooms[0]?.id ?? "",
+        messages: mockMessages,
+      }}
+    >
+      <AppLayout />
+    </ChatProvider>
+  );
 }
 
-export default App
+export default App;
