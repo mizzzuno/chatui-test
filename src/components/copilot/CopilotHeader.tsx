@@ -4,6 +4,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
+import ShinyText from "@/components/reactbits/ShinyText";
 
 type CopilotHeaderProps = {
   onClose: () => void;
@@ -18,7 +19,9 @@ export function CopilotHeader({ onClose }: CopilotHeaderProps) {
     <div className="flex items-center justify-between border-b border-zinc-700 px-4 py-3">
       <div className="flex items-center gap-2">
         <span className="text-base">✨</span>
-        <h3 className="text-sm font-semibold text-zinc-100">Copilot</h3>
+        <h3 className="text-sm font-semibold">
+          <ShinyText text="Copilot" speed={3} className="text-zinc-100" />
+        </h3>
       </div>
 
       <Tooltip>
