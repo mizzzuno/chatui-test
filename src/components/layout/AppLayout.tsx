@@ -21,7 +21,7 @@ export function AppLayout() {
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-background">
       {/* Sidebar: 固定幅、ダークグレー背景 */}
-      <div className="w-64 flex-shrink-0">
+      <div className="w-64 shrink-0">
         <Sidebar />
       </div>
 
@@ -32,12 +32,12 @@ export function AppLayout() {
 
       {/* Thread Panel: 条件表示、スライドイン/アウト */}
       <div
-        className={`flex-shrink-0 overflow-hidden border-l border-border transition-all duration-300 ease-in-out ${
-          state.isThreadOpen ? "w-[360px]" : "w-0"
+        className={`shrink-0 overflow-hidden border-l border-border transition-all duration-300 ease-in-out ${
+          state.isThreadOpen ? "w-90" : "w-0"
         }`}
       >
         {state.isThreadOpen && (
-          <div className="w-[360px] h-full">
+          <div className="w-90 h-full">
             <ThreadPanel />
           </div>
         )}
@@ -45,12 +45,12 @@ export function AppLayout() {
 
       {/* Copilot Panel: 条件表示、独自のダークテーマ */}
       <div
-        className={`flex-shrink-0 overflow-hidden border-l border-border transition-all duration-300 ease-in-out ${
-          state.isCopilotOpen ? "w-[360px]" : "w-0"
+        className={`shrink-0 overflow-hidden border-l border-border transition-all duration-300 ease-in-out ${
+          state.isCopilotOpen ? "w-90" : "w-0"
         }`}
       >
         {state.isCopilotOpen && (
-          <div className="w-[360px] h-full">
+          <div className="w-90 h-full">
             <CopilotPanel />
           </div>
         )}
