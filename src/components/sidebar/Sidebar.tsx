@@ -10,7 +10,13 @@ import ShinyText from "@/components/reactbits/ShinyText";
  * - 選択中ルーム名を ShinyText アクセントで表示
  * - RoomList でチャンネル / DM を一覧表示
  */
-export function Sidebar() {
+
+type SidebarProps = {
+  /** ルーム選択後に呼ばれるコールバック（モバイルサイドバークローズ用） */
+  onRoomSelected?: () => void;
+};
+
+export function Sidebar({ onRoomSelected }: SidebarProps) {
   const { state, dispatch } = useChatContext();
   const activeRoom = state.rooms.find((r) => r.id === state.activeRoomId);
 
@@ -47,9 +53,10 @@ export function Sidebar() {
       <RoomList
         rooms={state.rooms}
         activeRoomId={state.activeRoomId}
-        onSelectRoom={(roomId) =>
-          dispatch({ type: "SELECT_ROOM", payload: roomId })
-        }
+        onSelectRoom={(roomId) => {
+          dispatch({ type: "SELECT_ROOM", payload: roomId });
+          onRoomSelected?.();
+        }}
       />
     </div>
   );
