@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { useChatContext } from "@/hooks/useChatContext";
 import { Sidebar } from "@/components/sidebar/Sidebar";
 import { ChatPanel } from "@/components/chat/ChatPanel";
@@ -21,14 +21,6 @@ import { CopilotPanel } from "@/components/copilot/CopilotPanel";
 export function AppLayout() {
   const { state } = useChatContext();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
-  // ルーム選択時にモバイルサイドバーを閉じる
-  useEffect(() => {
-    setIsSidebarOpen(false);
-  }, [state.activeRoomId]);
-
-  // モバイルでパネルが開いた際にbodyスクロールを抑制
-  const isMobileOverlay = state.isThreadOpen || state.isCopilotOpen;
 
   const closeSidebar = useCallback(() => setIsSidebarOpen(false), []);
 
@@ -58,7 +50,7 @@ export function AppLayout() {
           />
           {/* Sidebar drawer */}
           <div className="relative h-full w-64 shadow-2xl animate-in slide-in-from-left duration-200">
-            <Sidebar />
+            <Sidebar onRoomSelected={closeSidebar} />
           </div>
         </div>
       )}
