@@ -70,10 +70,7 @@ export function CopilotPanel() {
   return (
     <div className="flex h-full flex-col bg-zinc-900 text-zinc-100">
       <CopilotHeader onClose={handleClose} />
-      <CopilotMessages
-        messages={state.copilotMessages}
-        isTyping={isTyping}
-      />
+      <CopilotMessages messages={state.copilotMessages} isTyping={isTyping} />
       <CopilotInput onSend={handleSend} disabled={isTyping} />
     </div>
   );
