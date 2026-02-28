@@ -1,85 +1,58 @@
+import { useCallback } from "react";
 import { useChatContext } from "@/hooks/useChatContext";
+import { ChatHeader } from "@/components/chat/ChatHeader";
+import { MessageList } from "@/components/chat/MessageList";
+import { MessageInput } from "@/components/chat/MessageInput";
+import type { Message, Thread } from "@/types";
 
 /**
  * メインチャットエリア全体
- * Step 7 で本実装する。ここではプレースホルダーを表示。
+ * - ChatHeader: ルーム名 + トグルボタン
+ * - MessageList: メッセージ一覧（自動スクロール）
+ * - MessageInput: 入力エリア（Enter送信）
  */
 export function ChatPanel() {
   const { state, dispatch } = useChatContext();
   const activeRoom = state.rooms.find((r) => r.id === state.activeRoomId);
+  const messages = state.messages[state.activeRoomId] ?? [];
+
+  const handleSendMessage = useCallback(
+    (content: string) => {
+      const newMessage: Message = {
+        id: `msg-${Date.now()}`,
+        userId: "user-1", // 自分のユーザーID（モック）
+        content,
+        timestamp: new Date().toISOString(),
+      };
+      dispatch({ type: "SEND_MESSAGE", payload: newMessage });
+    },
+    [dispatch],
+  );
+
+  const handleOpenThread = useCallback(
+    (thread: Thread) => {
+      dispatch({ type: "OPEN_THREAD", payload: thread });
+    },
+    [dispatch],
+  );
 
   return (
     <div className="flex h-full flex-col bg-background">
-      {/* チャットヘッダー */}
-      <div className="flex items-center justify-between border-b border-border px-4 py-3">
-        <div className="flex items-center gap-2">
-          {activeRoom && (
-            <>
-              <span className="text-muted-foreground">
-                {activeRoom.type === "channel" ? "#" : ""}
-              </span>
-              <h2 className="text-lg font-semibold text-foreground">
-                {activeRoom?.name ?? "チャンネルを選択"}
-              </h2>
-            </>
-          )}
-          {!activeRoom && (
-            <h2 className="text-lg font-semibold text-muted-foreground">
-              チャンネルを選択してください
-            </h2>
-          )}
-        </div>
-        <div className="flex items-center gap-1">
-          {/* スレッドトグル */}
-          <button
-            onClick={() =>
-              state.isThreadOpen
-                ? dispatch({ type: "CLOSE_THREAD" })
-                : undefined
-            }
-            className={`rounded-md p-2 text-sm transition-colors ${
-              state.isThreadOpen
-                ? "bg-accent text-accent-foreground"
-                : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-            }`}
-            title="スレッド"
-          >
-            💬
-          </button>
-          {/* Copilotトグル */}
-          <button
-            onClick={() => dispatch({ type: "TOGGLE_COPILOT" })}
-            className={`rounded-md p-2 text-sm transition-colors ${
-              state.isCopilotOpen
-                ? "bg-accent text-accent-foreground"
-                : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-            }`}
-            title="Copilot"
-          >
-            ✨
-          </button>
-        </div>
-      </div>
+      <ChatHeader />
 
-      {/* メッセージエリア（プレースホルダー） */}
-      <div className="flex-1 flex items-center justify-center text-muted-foreground">
-        {activeRoom ? (
-          <p className="text-sm">
-            #{activeRoom.name} のメッセージがここに表示されます
-          </p>
-        ) : (
+      {activeRoom ? (
+        <>
+          <MessageList messages={messages} onOpenThread={handleOpenThread} />
+          <MessageInput
+            placeholder={`#${activeRoom.name} にメッセージを送信`}
+            onSend={handleSendMessage}
+          />
+        </>
+      ) : (
+        <div className="flex flex-1 items-center justify-center text-muted-foreground">
           <p className="text-sm">
             左のサイドバーからチャンネルを選択してください
           </p>
-        )}
-      </div>
-
-      {/* 入力エリア（プレースホルダー） */}
-      {activeRoom && (
-        <div className="border-t border-border px-4 py-3">
-          <div className="rounded-lg border border-border bg-muted/50 px-4 py-2.5 text-sm text-muted-foreground">
-            #{activeRoom.name} にメッセージを送信（Step 7 で実装）
-          </div>
         </div>
       )}
     </div>
