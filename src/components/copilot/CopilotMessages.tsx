@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import DecryptedText from "@/components/reactbits/DecryptedText";
+import Aurora from "@/components/reactbits/Aurora";
 import type { CopilotMessage } from "@/types";
 
 type CopilotMessagesProps = {
@@ -24,8 +25,14 @@ export function CopilotMessages({ messages, isTyping }: CopilotMessagesProps) {
 
   if (messages.length === 0) {
     return (
-      <div className="flex flex-1 items-center justify-center text-zinc-500">
-        <div className="text-center">
+      <div className="relative flex flex-1 items-center justify-center text-zinc-500">
+        <Aurora
+          colorStops={["#6366F1", "#8B5CF6", "#A78BFA"]}
+          blend={0.25}
+          amplitude={0.6}
+          speed={0.4}
+        />
+        <div className="relative z-10 text-center">
           <p className="text-2xl">✨</p>
           <p className="mt-2 text-sm">Copilotに何でも質問してください</p>
         </div>

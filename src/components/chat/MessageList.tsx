@@ -3,6 +3,7 @@ import type { Message, Thread } from "@/types";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { MessageItem } from "@/components/chat/MessageItem";
 import { userMap, mockThreads } from "@/data/mockData";
+import Aurora from "@/components/reactbits/Aurora";
 
 type MessageListProps = {
   messages: Message[];
@@ -26,8 +27,14 @@ export function MessageList({ messages, onOpenThread }: MessageListProps) {
     <ScrollArea className="flex-1">
       <div className="py-4">
         {messages.length === 0 ? (
-          <div className="flex h-full items-center justify-center px-4 py-20 text-muted-foreground">
-            <p className="text-sm">まだメッセージがありません</p>
+          <div className="relative flex h-full items-center justify-center px-4 py-20 text-muted-foreground">
+            <Aurora
+              colorStops={["#3A29FF", "#FF94B4", "#FF3232"]}
+              blend={0.3}
+              amplitude={0.8}
+              speed={0.3}
+            />
+            <p className="relative z-10 text-sm">まだメッセージがありません</p>
           </div>
         ) : (
           messages.map((msg) => (
